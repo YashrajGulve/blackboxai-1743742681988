@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100" style="font-family: 'Inter', sans-serif">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden p-8">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-blue-600 mb-2">Analysis Results</h1>
+                    <a href="/" class="text-blue-500 hover:text-blue-700">
+                        ← Back to analyzer
+                    </a>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">VADER Analysis</h2>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>Negative</span>
+                                <span>Positive</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div id="vader-bar" class="h-3 rounded-full bg-blue-500"></div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700">
+                            Score: <span id="vader-score" class="font-mono">0.00</span>
+                            (range: -1 to 1)
+                        </p>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">Trained Model</h2>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>0%</span>
+                                <span>100%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div id="nb-bar" class="h-3 rounded-full bg-green-500" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700">
+                            Confidence: <span id="nb-score" class="font-mono">50</span>%
+                            (range: 0 to 1)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get data from Flask template variables
+        const vaderScore = parseFloat("{{ vader_score }}");
+        const nbScore = parseFloat("{{ nb_score }}");
+        
+        document.getElementById('vader-score').textContent = vaderScore.toFixed(2);
+        document.getElementById('vader-bar').style.width = `${(vaderScore + 1) * 50}%`;
+        
+        document.getElementById('nb-score').textContent = Math.round(nbScore * 100);
+        document.getElementById('nb-bar').style.width = `${nbScore * 100}%`;
+    </script>
+</body>
+</html>
